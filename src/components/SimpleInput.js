@@ -5,7 +5,8 @@ const SimpleInput = (props) => {
   const nameInputRef = useRef();
 
   const [enteredName, setEnteredName] = useState("");
-  const [enteredNameIsValid, setenteredNameIsValid]=useState(true);
+  const [enteredNameIsValid, setenteredNameIsValid]=useState(false);
+  const [enteredNameTouched, setEnteredNameTouched]= useState(false);
   useEffect(()=>{
     if(enteredNameIsValid){
       console.log('yu hu')
@@ -17,6 +18,7 @@ const SimpleInput = (props) => {
   };
   const formSubmissonHandler = (event) => {
     event.preventDefault();
+    setEnteredNameTouched(true);
     if(enteredName.trim()=== ''){
       setenteredNameIsValid(false)
       return;
@@ -28,7 +30,8 @@ const SimpleInput = (props) => {
    
 
   };
-  const nameInputClasses = enteredNameIsValid ? "form-control" : "form-control invalid";
+  const nameInputISInvalid = !enteredNameIsValid && enteredNameTouched;
+  const nameInputClasses = !nameInputISInvalid ? "form-control" : "form-control invalid";
   return (
     <form onSubmit={formSubmissonHandler}>
       <div className={nameInputClasses}>
@@ -42,7 +45,7 @@ const SimpleInput = (props) => {
           value={enteredName}
          
         />
-         {!enteredNameIsValid && <p className="error-text">name is not valid</p>}
+         {nameInputISInvalid && <p className="error-text">name is not valid</p>}
       </div>
       <div className="form-actions">
         <button>Submit</button>
